@@ -1,6 +1,7 @@
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -13,8 +14,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 
 public class Main extends Application {
     boolean visible = false;
@@ -84,15 +90,31 @@ public class Main extends Application {
         Button listLoop = new Button("-><-");
         listButtons.getChildren().addAll(listPlus, listArrow, listLoop);
         paneListDown.setLeft(listButtons);
+        
+        paneListDown.setCenter(new Label("X élements"));
 
         TextField textfield = new TextField();
         paneListDown.setRight(textfield);
 
-        TreeTableView<Integer> tree = new TreeTableView<>();
+        TreeTableView<Music> tree = new TreeTableView<>();
+        TreeTableColumn<Music,String> nom = new TreeTableColumn<>("Nom");
+        TreeTableColumn<Music,String> auteur = new TreeTableColumn<>("Auteur");
+        TreeTableColumn<Music,String> duree = new TreeTableColumn<>("Duree");
+        TreeItem<Music> rootItem = new TreeItem<>();
+        tree.setRoot(rootItem);
+        //CellFactory pour les colonnes
+        nom.setCellValueFactory(new TreeItemPropertyValueFactory<>("auteur"));
+        auteur.setCellValueFactory(new TreeItemPropertyValueFactory<>("titre"));
+        duree.setCellValueFactory(new TreeItemPropertyValueFactory<>("duree"));
+      
+        Music m = new Music("ACDCu", "H", "42");
+        TreeItem<Music> t2 = new TreeItem<>(m);
+        rootItem.getChildren().add(t2);
+        tree.getColumns().addAll(nom,auteur,duree);
         listPane.setCenter(tree);
         listPane.setBottom(paneListDown);
         listPane.setVisible(visible);
-        stage.setHeight(90);
+        stage.setHeight(100);
         
         root.setTop(playerPane);
         root.setCenter(listPane);
@@ -101,7 +123,7 @@ public class Main extends Application {
         buttonList.setOnAction((ActionEvent event) -> {
             visible = !visible;
             if(!visible){
-                stage.setHeight(90);
+                stage.setHeight(100);
                 buttonList.setStyle("");
             }else{
                 stage.setHeight(400);
@@ -114,7 +136,7 @@ public class Main extends Application {
         stage.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             if (newValue.intValue() < 150){
                 visible = false;
-                stage.setHeight(90);
+                stage.setHeight(100);
                 buttonList.setSelected(false);
                 buttonList.setStyle("");
                 
