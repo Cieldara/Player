@@ -1,11 +1,8 @@
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.Scene;
@@ -15,12 +12,10 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.util.Callback;
 
 public class Main extends Application {
     boolean visible = false;
@@ -29,9 +24,10 @@ public class Main extends Application {
     
     public void start(Stage stage) {
 
+        //Le BorderPane à la racine de notre scène
         root = new BorderPane();
 
-        //Le BorderPane qui sera placé a la racine de notre scene
+        //Le BorderPane du lecteur
         BorderPane playerPane = new BorderPane();
 
         //BorderPane pour les boutons de lecture
@@ -51,14 +47,15 @@ public class Main extends Application {
         leftPane.setTop(upButtons);
         leftPane.setBottom(downButtons);
 
+        //Le BorderPane pour les items à droite
         BorderPane centerPane = new BorderPane();
 
         BorderPane downSliderAndButtons = new BorderPane();
         Slider soundSlider = new Slider();
+        
         HBox rightButtons = new HBox();
         Button buttonBars = new Button("|||");
         buttonList = new ToggleButton(":=");
-
         rightButtons.getChildren().addAll(buttonBars, buttonList);
         downSliderAndButtons.setLeft(soundSlider);
         downSliderAndButtons.setRight(rightButtons);
@@ -80,8 +77,8 @@ public class Main extends Application {
         playerPane.setLeft(leftPane);
         playerPane.setCenter(centerPane);
 
+        
         BorderPane listPane = new BorderPane();
-
 
         BorderPane paneListDown = new BorderPane();
         HBox listButtons = new HBox();
@@ -96,6 +93,7 @@ public class Main extends Application {
         TextField textfield = new TextField();
         paneListDown.setRight(textfield);
 
+        //TreeTableView peuplé avec quelques données
         TreeTableView<Music> tree = new TreeTableView<>();
         TreeTableColumn<Music,String> nom = new TreeTableColumn<>("Nom");
         TreeTableColumn<Music,String> auteur = new TreeTableColumn<>("Auteur");
